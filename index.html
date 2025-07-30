@@ -839,19 +839,19 @@
   window.addEventListener("scroll", scrollFunction);
 </script>
         
-    <script>
+<script>
         // Manifest for PWA
         const manifest = {
             "name": "GFR Calculator",
             "short_name": "GFR Calc",
             "description": "Glomerular Filtration Rate calculator for kidney function assessment",
-            "start_url": "/",
+            "start_url": "/index.html",
             "display": "standalone",
             "background_color": "#ffffff",
             "theme_color": "#3b82f6",
             "icons": [
                 {
-                    "src": "/icon/android-icon-192x192.png",
+                    "src": "icon/android-icon-192x192.png",
                     "sizes": "192x192",
                     "type": "image/png"
                 },
@@ -875,11 +875,6 @@
             const urlsToCache = [
                 '/',
                 '/index.html',
-                '/calculator.html',
-                '/stages.html',
-                '/contact.html',
-                '/styles.css',
-                '/script.js',
                 '/imgs/logo.png',
                 '/icon/android-icon-192x192.png',
                 '/icon/apple-icon-180x180.png'

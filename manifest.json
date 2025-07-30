@@ -1,0 +1,21 @@
+{
+    "name": "GFR Calculator",
+    "short_name": "GFR Calc",
+    "description": "Glomerular Filtration Rate calculator for kidney function assessment",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#3b82f6",
+    "icons": [
+        {
+            "src": "icon/android-icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/icon/apple-icon-180x180.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        }
+    ]
+}

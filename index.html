@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>yourGFR Calculator | Dr. Ivanov</title>
+    <link rel="icon" type="image/x-icon" href="/icon/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="manifest" href="/manifest.json">
+    <style>
+        .tab-active {
+            border-bottom: 3px solid #3b82f6;
+            color: #3b82f6;
+            font-weight: 600;
+        }
+        .language-active {
+            background-color: #3b82f6;
+            /*background-color: #f63bd9;*/
+            color: white;
+        }
+        .hidden {
+            display: none;
+        }
+        .result-box {
+            transition: all 0.3s ease;
+        }
+        .result-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <button
+      type="button"
+      data-twe-ripple-init
+      data-twe-ripple-color="light"
+      class="!fixed bottom-5 end-5 hidden rounded-full bg-red-600 p-3 text-xs font-medium uppercase leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg"
+      id="btn-back-to-top">
+      <span class="[&>svg]:w-4">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="3"
+          stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
+        </svg>
+      </span>
+    </button>
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-6 flex justify-between items-center">
+            <!-- h1 class="text-2xl font-bold text-blue-600" id="header-title"><img src="/imgs/logo.png" class="img-responsive"/>yourGFR Calculator</h1 -->
+            <h1 class="text-2xl font-bold text-blue-600"><img src="/imgs/logo.png" class="img-responsive"/></h1>
+            <div class="flex space-x-2">
+                <button id="lang-en" class="language-active px-3 py-1 rounded-full text-sm border border-blue-600">EN</button>
+                <button id="lang-ua" class="px-3 py-1 rounded-full text-sm border border-blue-600">UA</button>
+                <button id="lang-ru" class="px-3 py-1 rounded-full text-sm border border-blue-600">RU</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-blue-700 text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl font-bold mb-4" id="hero-title">yourGFR Calculator</h1>
+            <p class="text-xl mb-8" id="hero-subtitle">Assess your kidney function with precision</p>
+            <div class="flex justify-center space-x-4">
+                <a href="#calculator" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-medium hover:bg-blue-50 transition" id="hero-button-1">Calculate Now</a>
+                <a href="#stages" class="border-2 border-white px-6 py-3 rounded-lg font-medium hover:bg-white hover:text-blue-600 transition" id="hero-button-2">Learn About Stages</a>
+                <a href="#contact" class="border-2 border-white px-6 py-3 rounded-lg font-medium hover:bg-white hover:text-blue-600 transition" id="hero-button-3">Contact Dr. Ivanov</a>
+            </div>
+        </div>
+    </section>
+
+    <main class="container mx-auto px-4 py-8" id="calculator">
+        <div class="max-w-3xl mx-auto">
+            <!-- Calculator Tabs -->
+            <div class="flex border-b mb-8">
+                <button id="tab-creatinine" class="tab-active px-6 py-3 text-center" data-tab="creatinine">Creatinine</button>
+                <button id="tab-cystatin" class="px-6 py-3 text-center" data-tab="cystatin">Cystatin C</button>
+            </div>
+
+            <!-- Creatinine Calculator -->
+            <div id="creatinine-calculator" class="calculator-section">
+                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                    <h2 class="text-xl font-semibold mb-4" id="creatinine-title">Creatinine-based GFR Calculation</h2>
+                    
+                    <div class="flex items-center mb-4">
+                        <span class="mr-2" id="units-label">Units:</span>
+                        <div class="flex">
+                            <button id="unit-mgdl" class="bg-blue-600 text-white px-4 py-2 rounded-l-lg">mg/dL</button>
+                            <button id="unit-mmol" class="bg-gray-200 px-4 py-2 rounded-r-lg">mmol/L</button>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="age" class="block mb-2" id="age-label">Age (years)</label>
+                            <input type="number" id="age" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500" min="18" max="120">
+                        </div>
+                        
+                        <div>
+                            <label for="sex" class="block mb-2" id="sex-label">Sex</label>
+                            <select id="sex" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                <option value="male" id="male-option">Male</option>
+                                <option value="female" id="female-option">Female</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="creatinine" class="block mb-2" id="creatinine-label">Serum Creatinine (mg/dL)</label>
+                            <input type="number" id="creatinine" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500" step="0.01" min="0.1">
+                        </div>
+                        
+                        <div>
+                            <label for="race" class="block mb-2" id="race-label">Race</label>
+                            <select id="race" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                <option value="non-black" id="non-black-option">Non-Black</option>
+                                <option value="black" id="black-option">Black</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- button id="calculate-creatinine" class="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300" id="calculate-button" -->
+                    <button id="calculate-creatinine" class="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300">
+                        Calculate GFR
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cystatin C Calculator -->
+            <div id="cystatin-calculator" class="calculator-section hidden">
+                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                    <h2 class="text-xl font-semibold mb-4" id="cystatin-title">Cystatin C-based GFR Calculation</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="cystatin-age" class="block mb-2" id="cystatin-age-label">Age (years)</label>
+                            <input type="number" id="cystatin-age" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500" min="18" max="120">
+                        </div>
+                        
+                        <div>
+                            <label for="cystatin-sex" class="block mb-2" id="cystatin-sex-label">Sex</label>
+                            <select id="cystatin-sex" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                <option value="male" id="cystatin-male-option">Male</option>
+                                <option value="female" id="cystatin-female-option">Female</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="cystatin" class="block mb-2" id="cystatin-label">Serum Cystatin C (mg/L)</label>
+                            <input type="number" id="cystatin" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500" step="0.01" min="0.1">
+                        </div>
+                    </div>
+                    
+                    <!-- button id="calculate-cystatin" class="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300" id="cystatin-calculate-button" -->
+                    <button id="calculate-cystatine" class="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300">
+                        Calculate GFR
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results" class="hidden">
+                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                    <h2 class="text-xl font-semibold mb-4" id="results-title">Results</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="result-box bg-blue-50 p-4 rounded-lg border border-blue-100">
+                            <h3 class="font-medium text-blue-800 mb-2" id="gfr-value-title">GFR Value</h3>
+                            <p class="text-3xl font-bold text-blue-600" id="gfr-value">--</p>
+                            <p class="text-sm text-gray-600 mt-1" id="gfr-unit">mL/min/1.73m²</p>
+                        </div>
+                        
+                        <div class="result-box bg-green-50 p-4 rounded-lg border border-green-100">
+                            <h3 class="font-medium text-green-800 mb-2" id="kidney-stage-title">Kidney Stage</h3>
+                            <p class="text-2xl font-bold text-green-600" id="kidney-stage">--</p>
+                            <p class="text-sm text-gray-600 mt-1" id="stage-description">--</p>
+                        </div>
+                        
+                        <div class="result-box bg-yellow-50 p-4 rounded-lg border border-yellow-100">
+                            <h3 class="font-medium text-yellow-800 mb-2" id="interpretation-title">Interpretation</h3>
+                            <p class="text-lg font-medium text-yellow-600" id="interpretation">--</p>
+                            <p class="text-sm text-gray-600 mt-1" id="recommendation">--</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 bg-gray-50 p-4 rounded-lg">
+                        <h3 class="font-medium mb-2" id="formula-used-title">Formula Used:</h3>
+                        <p class="text-sm font-mono bg-white p-2 rounded" id="formula-used">--</p>
+                    </div>
+                    
+                    <!-- button id="reset-calculator" class="w-full mt-6 bg-gray-200 text-gray-800 py-3 rounded-lg hover:bg-gray-300 transition duration-300" id="reset-button" -->
+                    <button class="w-full mt-6 bg-gray-200 text-gray-800 py-3 rounded-lg hover:bg-gray-300 transition duration-300" id="reset-button">
+                        Reset Calculator
+                    </button>
+                </div>
+            </div>
+
+            <!-- About Section -->
+            <section id="about" class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-xl font-semibold mb-4" id="about-title">About GFR Calculator</h2>
+                <div class="prose max-w-none">
+                    <p id="about-text-1">The Glomerular Filtration Rate (GFR) is the best overall index of kidney function. It represents the flow rate of filtered fluid through the kidney.</p>
+                    <p class="mt-2" id="about-text-2">This calculator uses validated equations to estimate GFR based on serum creatinine or cystatin C levels, along with demographic information.</p>
+                    <p class="mt-2" id="about-text-3">For creatinine-based calculation, we use the CKD-EPI equation (2021). For cystatin C-based calculation, we use the CKD-EPI cystatin C equation (2012).</p>
+                    <p class="mt-2 font-medium" id="about-text-4">Note: This calculator is for informational purposes only and should not replace professional medical advice.</p>
+                </div>
+            </section>
+
+            <!-- Kidney Stages Section -->
+            <section id="stages" class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-xl font-semibold mb-4" id="stages-title">Kidney Disease Stages</h2>
+                <div class="space-y-6">
+                    <div class="border-l-4 border-green-500 pl-4 py-2">
+                        <h3 class="font-medium text-lg" id="stage1-title">Stage 1 (GFR ≥ 90)</h3>
+                        <p class="text-gray-700" id="stage1-desc">Normal kidney function but with evidence of kidney damage (e.g., protein in urine).</p>
+                    </div>
+                    <div class="border-l-4 border-blue-500 pl-4 py-2">
+                        <h3 class="font-medium text-lg" id="stage2-title">Stage 2 (GFR 60-89)</h3>
+                        <p class="text-gray-700" id="stage2-desc">Mildly reduced kidney function with evidence of kidney damage.</p>
+                    </div>
+                    <div class="border-l-4 border-yellow-500 pl-4 py-2">
+                        <h3 class="font-medium text-lg" id="stage3-title">Stage 3 (GFR 30-59)</h3>
+                        <p class="text-gray-700" id="stage3-desc">Moderate reduction in kidney function. Divided into 3A (45-59) and 3B (30-44).</p>
+                    </div>
+                    <div class="border-l-4 border-orange-500 pl-4 py-2">
+                        <h3 class="font-medium text-lg" id="stage4-title">Stage 4 (GFR 15-29)</h3>
+                        <p class="text-gray-700" id="stage4-desc">Severe reduction in kidney function. Preparation for renal replacement therapy should begin.</p>
+                    </div>
+                    <div class="border-l-4 border-red-500 pl-4 py-2">
+                        <h3 class="font-medium text-lg" id="stage5-title">Stage 5 (GFR &lt; 15)</h3>
+                        <p class="text-gray-700" id="stage5-desc">Kidney failure requiring dialysis or transplantation.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact" class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-semibold mb-4" id="contact-title">Contact Dr. Ivanov, MD, PhD, DSC</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="font-medium mb-2" id="contact-info-title">Contact Information</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-center">
+                                <i class="fas fa-link mr-3 text-blue-600"></i>
+                                <span id="web-site"><a href="https://professorivanov.com/" style="color:#6e0b5b;text-decoration:none;" target="_blank">https://professorivanov.com/</a></span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-envelope mr-3 text-blue-600"></i>
+                                <span><a href="mailto:ivanovdd@i.ua?Subject=Hello%20again" target="_top" style="color:#6e0b5b;text-decoration:none;"><span id="email-text">Contact me by Mail</span></a></span>
+                            </li>
+                            <!-- li class="flex items-center">
+                                <i class="fas fa-map-marker-alt mr-3 text-blue-600"></i>
+                                <span id="address-text">Address: Medical Center, Kyiv, Ukraine</span>
+                            </li -->
+                        </ul>
+                    </div>
+                    <div>
+                        <!-- h3 class="font-medium mb-2" id="appointment-title"></h3 -->
+                        <!-- p class="mb-4" id="appointment-text">For consultations and professional evaluation of your kidney function, please contact our office.</p-->
+                        <img src="/imgs/UAPN_logo.png" class="img-responsive" alt="UAPN Logo">
+                        <!-- button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300" id="contact-button">
+                            <i class="fas fa-calendar-alt mr-2"></i>
+                            <span id="schedule-text">Schedule Appointment</span>
+                        </button -->
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <span><img src="/imgs/logo.png" class="img-responsive"/></span>
+                    <h3 class="text-lg font-semibold" id="footer-title">yourGFR Calculator</h3>
+                    <p class="text-gray-400 text-sm mt-1" id="footer-text">Medical tool for kidney function assessment</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-6 pt-6 text-center text-sm text-gray-400">
+                <p id="copyright-text">© 2025 Dr. Ivanov Nephrology Clinic. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Translations
+        const translations = {
+            en: {
+                "header-title": "yourGFR Calculator",
+                "hero-title": "yourGFR Calculator",
+                "hero-subtitle": "Assess your kidney function with precision",
+                "hero-button-1": "Calculate Now",
+                "hero-button-2": "Learn About Stages",
+                "hero-button-3": "Contact Dr. Ivanov",
+                "stages-title": "Kidney Disease Stages",
+                "stage1-title": "Stage 1 (GFR ≥ 90)",
+                "stage1-desc": "Normal kidney function but with evidence of kidney damage (e.g., protein in urine).",
+                "stage2-title": "Stage 2 (GFR 60-89)",
+                "stage2-desc": "Mildly reduced kidney function with evidence of kidney damage.",
+                "stage3-title": "Stage 3 (GFR 30-59)",
+                "stage3-desc": "Moderate reduction in kidney function. Divided into 3A (45-59) and 3B (30-44).",
+                "stage4-title": "Stage 4 (GFR 15-29)",
+                "stage4-desc": "Severe reduction in kidney function. Preparation for renal replacement therapy should begin.",
+                "stage5-title": "Stage 5 (GFR < 15)",
+                "stage5-desc": "Kidney failure requiring dialysis or transplantation.",
+                "creatinine-title": "Creatinine-based GFR Calculation",
+                "cystatin-title": "Cystatin C-based GFR Calculation",
+                "units-label": "Units:",
+                "age-label": "Age (years)",
+                "sex-label": "Sex",
+                "male-option": "Male",
+                "female-option": "Female",
+                "creatinine-label": "Serum Creatinine (mg/dL)",
+                "race-label": "Race",
+                "non-black-option": "Non-Black",
+                "black-option": "Black",
+                "cystatin-age-label": "Age (years)",
+                "cystatin-sex-label": "Sex",
+                "cystatin-male-option": "Male",
+                "cystatin-female-option": "Female",
+                "cystatin-label": "Serum Cystatin C (mg/L)",
+                "calculate-button": "Calculate GFR",
+                "calculate-cystatine":"Calculate GFR",
+                "calculate-creatinine":"Calculate GFR",
+                "cystatin-calculate-button": "Calculate GFR",
+                "results-title": "Results",
+                "gfr-value-title": "GFR Value",
+                "gfr-unit": "mL/min/1.73m²",
+                "kidney-stage-title": "Kidney Stage",
+                "interpretation-title": "Interpretation",
+                "formula-used-title": "Formula Used:",
+                "reset-button": "Reset Calculator",
+                "about-title": "About GFR Calculator",
+                "about-text-1": "The Glomerular Filtration Rate (GFR) is the best overall index of kidney function. It represents the flow rate of filtered fluid through the kidney.",
+                "about-text-2": "This calculator uses validated equations to estimate GFR based on serum creatinine or cystatin C levels, along with demographic information.",
+                "about-text-3": "For creatinine-based calculation, we use the CKD-EPI equation (2021). For cystatin C-based calculation, we use the CKD-EPI cystatin C equation (2012).",
+                "about-text-4": "Note: This calculator is for informational purposes only and should not replace professional medical advice.",
+                "contact-title": "Contact Dr. Ivanov",
+                "contact-info-title": "Contact Information",
+                "phone-text": "Phone: +380 12 345 6789",
+                "email-text": "Email: dr.ivanov@example.com",
+                "address-text": "Address: Medical Center, Kyiv, Ukraine",
+                "appointment-title": "Make an Appointment",
+                "appointment-text": "For consultations and professional evaluation of your kidney function, please contact our office.",
+                "schedule-text": "Schedule Appointment",
+                "footer-title": "yourGFR Calculator",
+                "footer-text": "Medical tool for kidney function assessment",
+                "copyright-text": "© 2023 Dr. Ivanov Nephrology Clinic. All rights reserved."
+            },
+            ua: {
+                "header-title": "Калькулятор yourGFR",
+                "hero-title": "Калькулятор yourGFR",
+                "hero-subtitle": "Оцініть функцію нирок з точністю",
+                "hero-button-1": "Розрахувати зараз",
+                "hero-button-2": "Дізнатися про стадії",
+                "hero-button-3": "Контакти доктора Іванова",
+                "stages-title": "Стадії хронічної хвороби нирок",
+                "stage1-title": "Стадія 1 (GFR ≥ 90)",
+                "stage1-desc": "Нормальна функція нирок, але є ознаки ушкодження нирок (наприклад, білок у сечі).",
+                "stage2-title": "Стадія 2 (GFR 60-89)",
+                "stage2-desc": "Незначне зниження функції нирок з ознаками ушкодження нирок.",
+                "stage3-title": "Стадія 3 (GFR 30-59)",
+                "stage3-desc": "Помірне зниження функції нирок. Поділяється на 3A (45-59) та 3B (30-44).",
+                "stage4-title": "Стадія 4 (GFR 15-29)",
+                "stage4-desc": "Значне зниження функції нирок. Потрібно починати підготовку до замісної ниркової терапії.",
+                "stage5-title": "Стадія 5 (GFR < 15)",
+                "stage5-desc": "Ниркова недостатність, що вимагає діалізу або трансплантації.",
+                "creatinine-title": "Розрахунок GFR на основі креатиніну",
+                "cystatin-title": "Розрахунок GFR на основі цистатину C",
+                "units-label": "Одиниці:",
+                "age-label": "Вік (роки)",
+                "sex-label": "Стать",
+                "male-option": "Чоловік",
+                "female-option": "Жінка",
+                "creatinine-label": "Креатинин сироватки (мг/дл)",
+                "race-label": "Раса",
+                "non-black-option": "Не чорношкірий",
+                "black-option": "Чорношкірий",
+                "cystatin-age-label": "Вік (роки)",
+                "cystatin-sex-label": "Стать",
+                "cystatin-male-option": "Чоловік",
+                "cystatin-female-option": "Жінка",
+                "cystatin-label": "Цистатин C сироватки (мг/л)",
+                "calculate-button": "Розрахувати GFR",
+                "calculate-cystatine":"Розрахувати GFR",
+                "calculate-creatinine":"Розрахувати GFR",
+                "cystatin-calculate-button": "Розрахувати GFR",
+                "results-title": "Результати",
+                "gfr-value-title": "Значення GFR",
+                "gfr-unit": "мл/хв/1.73м²",
+                "kidney-stage-title": "Стадія ниркової недостатності",
+                "interpretation-title": "Інтерпретація",
+                "formula-used-title": "Використана формула:",
+                "reset-button": "Скинути калькулятор",
+                "about-title": "Про калькулятор GFR",
+                "about-text-1": "Швидкість клубочкової фільтрації (GFR) є найкращим показником функції нирок. Вона відображає швидкість фільтрації рідини через нирки.",
+                "about-text-2": "Цей калькулятор використовує перевірені рівняння для оцінки GFR на основі рівня креатиніну або цистатину C в сироватці крові разом з демографічною інформацією.",
+                "about-text-3": "Для розрахунку на основі креатиніну використовується рівняння CKD-EPI (2021). Для розрахунку на основі цистатину C використовується рівняння CKD-EPI цистатину C (2012).",
+                "about-text-4": "Примітка: Цей калькулятор призначений лише для інформаційних цілей і не повинен заміняти професійну медичну консультацію.",
+                "contact-title": "Контакти доктора Іванова",
+                "contact-info-title": "Контактна інформація",
+                "phone-text": "Телефон: +380 12 345 6789",
+                "email-text": "Зв'яжіться зі мною поштою",
+                "address-text": "Адреса: Медичний центр, Київ, Україна",
+                "appointment-title": "Записатися на прийом",
+                "appointment-text": "Для консультації та професійної оцінки функції ваших нирок, будь ласка, зв'яжіться з нашим офісом.",
+                "schedule-text": "Записатися",
+                "footer-title": "Калькулятор yourGFR",
+                "footer-text": "Інструмент для оцінки функції нирок",
+                "copyright-text": "© 2023 Клініка нефрології доктора Іванова. Усі права захищені."
+            },
+            ru: {
+                "header-title": "Калькулятор yourGFR",
+                "hero-title": "Калькулятор yourGFR",
+                "hero-subtitle": "Оцените функцию почек с точностью",
+                "hero-button-1": "Рассчитать сейчас",
+                "hero-button-2": "Узнать о стадиях",
+                "hero-button-3": "Контакты доктора Иванова",
+                "stages-title": "Стадии хронической болезни почек",
+                "stage1-title": "Стадия 1 (GFR ≥ 90)",
+                "stage1-desc": "Нормальная функция почек, но есть признаки повреждения почек (например, белок в моче).",
+                "stage2-title": "Стадия 2 (GFR 60-89)",
+                "stage2-desc": "Незначительное снижение функции почек с признаками повреждения почек.",
+                "stage3-title": "Стадия 3 (GFR 30-59)",
+                "stage3-desc": "Умеренное снижение функции почек. Подразделяется на 3A (45-59) и 3B (30-44).",
+                "stage4-title": "Стадия 4 (GFR 15-29)",
+                "stage4-desc": "Значительное снижение функции почек. Необходимо начинать подготовку к заместительной почечной терапии.",
+                "stage5-title": "Стадия 5 (GFR < 15)",
+                "stage5-desc": "Почечная недостаточность, требующая диализа или трансплантации.",
+                "creatinine-title": "Расчет GFR на основе креатинина",
+                "cystatin-title": "Расчет GFR на основе цистатина C",
+                "units-label": "Единицы:",
+                "age-label": "Возраст (лет)",
+                "sex-label": "Пол",
+                "male-option": "Мужчина",
+                "female-option": "Женщина",
+                "creatinine-label": "Креатинин сыворотки (мг/дл)",
+                "race-label": "Раса",
+                "non-black-option": "Не чернокожий",
+                "black-option": "Чернокожий",
+                "cystatin-age-label": "Возраст (лет)",
+                "cystatin-sex-label": "Пол",
+                "cystatin-male-option": "Мужчина",
+                "cystatin-female-option": "Женщина",
+                "cystatin-label": "Цистатин C сыворотки (мг/л)",
+                "calculate-button": "Рассчитать GFR",
+                "calculate-cystatine":"Рассчитать GFR",
+                "calculate-creatinine":"Рассчитать GFR",
+                "cystatin-calculate-button": "Рассчитать GFR",
+                "results-title": "Результаты",
+                "gfr-value-title": "Значение GFR",
+                "gfr-unit": "мл/мин/1.73м²",
+                "kidney-stage-title": "Стадия почечной недостаточности",
+                "interpretation-title": "Интерпретация",
+                "formula-used-title": "Использованная формула:",
+                "reset-button": "Сбросить калькулятор",
+                "about-title": "О калькуляторе GFR",
+                "about-text-1": "Скорость клубочковой фильтрации (GFR) является лучшим показателем функции почек. Она отражает скорость фильтрации жидкости через почки.",
+                "about-text-2": "Этот калькулятор использует проверенные уравнения для оценки GFR на основе уровня креатинина или цистатина C в сыворотке крови вместе с демографической информацией.",
+                "about-text-3": "Для расчета на основе креатинина используется уравнение CKD-EPI (2021). Для расчета на основе цистатина C используется уравнение CKD-EPI цистатина C (2012).",
+                "about-text-4": "Примечание: Этот калькулятор предназначен только для информационных целей и не должен заменять профессиональную медицинскую консультацию.",
+                "contact-title": "Контакты доктора Иванова",
+                "contact-info-title": "Контактная информация",
+                "phone-text": "Телефон: +380 12 345 6789",
+                "email-text": "Свяжитесь со мной по почте",
+                "address-text": "Адрес: Медицинский центр, Киев, Украина",
+                "appointment-title": "Записаться на прием",
+                "appointment-text": "Для консультации и профессиональной оценки функции ваших почек, пожалуйста, свяжитесь с нашим офисом.",
+                "schedule-text": "Записаться",
+                "footer-title": "Калькулятор yourGFR",
+                "footer-text": "Инструмент для оценки функции почек",
+                "copyright-text": "© 2023 Клиника нефрологии доктора Иванова. Все права защищены."
+            }
+        };
+
+        // Language switcher
+        document.getElementById('lang-en').addEventListener('click', () => switchLanguage('en'));
+        document.getElementById('lang-ua').addEventListener('click', () => switchLanguage('ua'));
+        document.getElementById('lang-ru').addEventListener('click', () => switchLanguage('ru'));
+
+        function switchLanguage(lang) {
+            // Clean the result tab in case of switch
+            resetCalculator();
+            // Update active language button
+            document.querySelectorAll('[id^="lang-"]').forEach(btn => {
+                btn.classList.remove('language-active', 'text-white');
+                btn.classList.add('text-blue-600');
+            });
+            document.getElementById(`lang-${lang}`).classList.add('language-active', 'text-white');
+            document.getElementById(`lang-${lang}`).classList.remove('text-blue-600');
+
+            // Update all text elements
+            for (const [key, value] of Object.entries(translations[lang])) {
+                const elements = document.querySelectorAll(`[id="${key}"]`);
+                elements.forEach(el => {
+                    el.textContent = value;
+                });
+            }
+
+            // Update creatinine label based on units
+            if (document.getElementById('unit-mgdl').classList.contains('bg-blue-600')) {
+                document.getElementById('creatinine-label').textContent = translations[lang]['creatinine-label'];
+            } else {
+                document.getElementById('creatinine-label').textContent = 
+                    lang === 'en' ? 'Serum Creatinine (μmol/L)' : 
+                    lang === 'ua' ? 'Креатинин сироватки (мкмоль/л)' : 
+                    'Креатинин сыворотки (мкмоль/л)';
+            }
+        }
+
+        // Tab switcher
+        document.getElementById('tab-creatinine').addEventListener('click', () => switchTab('creatinine'));
+        document.getElementById('tab-cystatin').addEventListener('click', () => switchTab('cystatin'));
+
+        function switchTab(tab) {
+            // Update active tab
+            document.querySelectorAll('[id^="tab-"]').forEach(btn => {
+                btn.classList.remove('tab-active');
+            });
+            document.getElementById(`tab-${tab}`).classList.add('tab-active');
+
+            // Show corresponding calculator
+            document.querySelectorAll('.calculator-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.getElementById(`${tab}-calculator`).classList.remove('hidden');
+        }
+
+        // Unit switcher
+        document.getElementById('unit-mgdl').addEventListener('click', () => switchUnits('mgdl'));
+        document.getElementById('unit-mmol').addEventListener('click', () => switchUnits('mmol'));
+
+        function switchUnits(unit) {
+            // Update active unit button
+            document.getElementById('unit-mgdl').classList.toggle('bg-blue-600', unit === 'mgdl');
+            document.getElementById('unit-mgdl').classList.toggle('text-white', unit === 'mgdl');
+            document.getElementById('unit-mgdl').classList.toggle('bg-gray-200', unit !== 'mgdl');
+            
+            document.getElementById('unit-mmol').classList.toggle('bg-blue-600', unit === 'mmol');
+            document.getElementById('unit-mmol').classList.toggle('text-white', unit === 'mmol');
+            document.getElementById('unit-mmol').classList.toggle('bg-gray-200', unit !== 'mmol');
+
+            // Update label
+            const lang = document.querySelector('.language-active').id.split('-')[1];
+            if (unit === 'mgdl') {
+                document.getElementById('creatinine-label').textContent = translations[lang]['creatinine-label'];
+            } else {
+                document.getElementById('creatinine-label').textContent = 
+                    lang === 'en' ? 'Serum Creatinine (μmol/L)' : 
+                    lang === 'ua' ? 'Креатинин сироватки (мкмоль/л)' : 
+                    'Креатинин сыворотки (мкмоль/л)';
+            }
+        }
+
+        // Calculator logic
+        document.getElementById('calculate-creatinine').addEventListener('click', calculateCreatinineGFR);
+        document.getElementById('calculate-cystatine').addEventListener('click', calculateCystatinGFR);
+        //document.getElementById('reset-calculator').addEventListener('click', resetCalculator);
+        document.getElementById('reset-button').addEventListener('click', resetCalculator);
+
+        function calculateCreatinineGFR() {
+            const age = parseFloat(document.getElementById('age').value);
+            const sex = document.getElementById('sex').value;
+            let creatinine = parseFloat(document.getElementById('creatinine').value);
+            const race = document.getElementById('race').value;
+            const lang = document.querySelector('.language-active').id.split('-')[1];
+            
+            // Check if mmol/L is selected and convert to mg/dL
+            if (!document.getElementById('unit-mgdl').classList.contains('bg-blue-600')) {
+                creatinine = creatinine / 88.4; // Convert μmol/L to mg/dL
+            }
+
+            // Validate inputs
+            if (isNaN(age) || isNaN(creatinine) || age < 18 || age > 120 || creatinine <= 0) {
+                alert(lang === 'en' ? 'Please enter valid values for all fields' : 
+                      lang === 'ua' ? 'Будь ласка, введіть коректні значення для всіх полів' : 
+                      'Пожалуйста, введите корректные значения для всех полей');
+                return;
+            }
+
+            // CKD-EPI 2021 creatinine equation
+            let k = sex === 'female' ? 0.7 : 0.9;
+            let alpha = sex === 'female' ? -0.241 : -0.302;
+            let multiplier = sex === 'female' ? 1.012 : 1;
+            
+            if (race === 'black') {
+                multiplier *= 1.159;
+            }
+            
+            let gfr = 142 * Math.min(creatinine/k, 1) ** alpha * 
+                     Math.max(creatinine/k, 1) ** -1.2 * 
+                     0.9938 ** age * multiplier;
+
+            // Round to 1 decimal place
+            gfr = Math.round(gfr * 10) / 10;
+
+            // Display results
+            displayResults(gfr, `CKD-EPI 2021 creatinine equation${race === 'black' ? ' (Black)' : ''}`);
+        }
+
+        function calculateCystatinGFR() {
+            const age = parseFloat(document.getElementById('cystatin-age').value);
+            const sex = document.getElementById('cystatin-sex').value;
+            const cystatin = parseFloat(document.getElementById('cystatin').value);
+            const lang = document.querySelector('.language-active').id.split('-')[1];
+            
+            // Validate inputs
+            if (isNaN(age) || isNaN(cystatin) || age < 18 || age > 120 || cystatin <= 0) {
+                alert(lang === 'en' ? 'Please enter valid values for all fields' : 
+                      lang === 'ua' ? 'Будь ласка, введіть коректні значення для всіх полів' : 
+                      'Пожалуйста, введите корректные значения для всех полей');
+                return;
+            }
+
+            // CKD-EPI 2012 cystatin C equation
+            let gfr;
+            if (sex === 'female') {
+                if (cystatin <= 0.8) {
+                    gfr = 133 * (cystatin/0.8) ** -0.499 * 0.996 ** age;
+                } else {
+                    gfr = 133 * (cystatin/0.8) ** -1.328 * 0.996 ** age;
+                }
+            } else {
+                if (cystatin <= 0.8) {
+                    gfr = 133 * (cystatin/0.8) ** -0.499 * 0.996 ** age * 0.932;
+                } else {
+                    gfr = 133 * (cystatin/0.8) ** -1.328 * 0.996 ** age * 0.932;
+                }
+            }
+
+            // Round to 1 decimal place
+            gfr = Math.round(gfr * 10) / 10;
+
+            // Display results
+            displayResults(gfr, "CKD-EPI 2012 cystatin C equation");
+        }
+
+        function displayResults(gfr, formula) {
+            const lang = document.querySelector('.language-active').id.split('-')[1];
+            
+            // Show results section
+            document.getElementById('results').classList.remove('hidden');
+            
+            // Display GFR value
+            document.getElementById('gfr-value').textContent = gfr;
+            
+            // Display formula used
+            document.getElementById('formula-used').textContent = formula;
+            
+            // Determine kidney stage and interpretation
+            let stage, description, interpretation, recommendation;
+            
+            if (gfr >= 90) {
+                stage = lang === 'en' ? 'Stage 1' : 
+                        lang === 'ua' ? 'Стадія 1' : 
+                        'Стадия 1';
+                description = lang === 'en' ? 'Normal kidney function' : 
+                             lang === 'ua' ? 'Нормальна функція нирок' : 
+                             'Нормальная функция почек';
+                interpretation = lang === 'en' ? 'Normal' : 
+                                 lang === 'ua' ? 'Нормально' : 
+                                 'Нормально';
+                recommendation = lang === 'en' ? 'Monitor for risk factors' : 
+                                lang === 'ua' ? 'Моніторіть фактори ризику' : 
+                                'Мониторьте факторы риска';
+            } else if (gfr >= 60) {
+                stage = lang === 'en' ? 'Stage 2' : 
+                        lang === 'ua' ? 'Стадія 2' : 
+                        'Стадия 2';
+                description = lang === 'en' ? 'Mildly decreased kidney function' : 
+                             lang === 'ua' ? 'Незначне зниження функції нирок' : 
+                             'Незначительное снижение функции почек';
+                interpretation = lang === 'en' ? 'Mild reduction' : 
+                                 lang === 'ua' ? 'Незначне зниження' : 
+                                 'Незначительное снижение';
+                recommendation = lang === 'en' ? 'Monitor kidney function' : 
+                                lang === 'ua' ? 'Моніторіть функцію нирок' : 
+                                'Мониторьте функцию почек';
+            } else if (gfr >= 30) {
+                stage = lang === 'en' ? 'Stage 3' : 
+                        lang === 'ua' ? 'Стадія 3' : 
+                        'Стадия 3';
+                description = lang === 'en' ? 'Moderately decreased kidney function' : 
+                             lang === 'ua' ? 'Помірне зниження функції нирок' : 
+                             'Умеренное снижение функции почек';
+                interpretation = lang === 'en' ? 'Moderate reduction' : 
+                                 lang === 'ua' ? 'Помірне зниження' : 
+                                 'Умеренное снижение';
+                recommendation = lang === 'en' ? 'Consult a nephrologist' : 
+                                lang === 'ua' ? 'Проконсультуйтесь з нефрологом' : 
+                                'Проконсультируйтесь с нефрологом';
+            } else if (gfr >= 15) {
+                stage = lang === 'en' ? 'Stage 4' : 
+                        lang === 'ua' ? 'Стадія 4' : 
+                        'Стадия 4';
+                description = lang === 'en' ? 'Severely decreased kidney function' : 
+                             lang === 'ua' ? 'Значне зниження функції нирок' : 
+                             'Значительное снижение функции почек';
+                interpretation = lang === 'en' ? 'Severe reduction' : 
+                                 lang === 'ua' ? 'Значне зниження' : 
+                                 'Значительное снижение';
+                recommendation = lang === 'en' ? 'Immediate nephrology consultation' : 
+                                lang === 'ua' ? 'Термінова консультація нефролога' : 
+                                'Срочная консультация нефролога';
+            } else {
+                stage = lang === 'en' ? 'Stage 5' : 
+                        lang === 'ua' ? 'Стадія 5' : 
+                        'Стадия 5';
+                description = lang === 'en' ? 'Kidney failure' : 
+                             lang === 'ua' ? 'Ниркова недостатність' : 
+                             'Почечная недостаточность';
+                interpretation = lang === 'en' ? 'Kidney failure' : 
+                                 lang === 'ua' ? 'Ниркова недостатність' : 
+                                 'Почечная недостаточность';
+                recommendation = lang === 'en' ? 'Dialysis or transplant evaluation' : 
+                                lang === 'ua' ? 'Оцінка для діалізу або трансплантації' : 
+                                'Оценка для диализа или трансплантации';
+            }
+            
+            document.getElementById('kidney-stage').textContent = stage;
+            document.getElementById('stage-description').textContent = description;
+            document.getElementById('interpretation').textContent = interpretation;
+            document.getElementById('recommendation').textContent = recommendation;
+            
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetCalculator() {
+            // Clear all inputs
+            document.querySelectorAll('input[type="number"]').forEach(input => {
+                input.value = '';
+            });
+            
+            // Reset to default selections
+            document.getElementById('sex').value = 'male';
+            document.getElementById('race').value = 'non-black';
+            document.getElementById('cystatin-sex').value = 'male';
+            
+            // Hide results
+            document.getElementById('results').classList.add('hidden');
+            
+            // Switch to creatinine tab if not already
+            if (document.getElementById('tab-creatinine').classList.contains('tab-active')) return;
+            switchTab('creatinine');
+        }
+
+        // Service Worker Registration for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(registration => {
+                    console.log('ServiceWorker registration successful');
+                }).catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+
+        // Install prompt for PWA
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent the mini-infobar from appearing on mobile
+            e.preventDefault();
+            // Stash the event so it can be triggered later.
+            deferredPrompt = e;
+            // Update UI notify the user they can install the PWA
+            showInstallPromotion();
+        });
+
+        function showInstallPromotion() {
+            const lang = document.querySelector('.language-active').id.split('-')[1];
+            const message = lang === 'en' ? 'Install this app for easier access' : 
+                           lang === 'ua' ? 'Встановіть цей додаток для зручності' : 
+                           'Установите это приложение для удобства';
+            
+            const installButton = document.createElement('button');
+            installButton.className = 'fixed bottom-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-700 transition';
+            installButton.textContent = message;
+            installButton.addEventListener('click', installApp);
+            
+            document.body.appendChild(installButton);
+        }
+
+        function installApp() {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                } else {
+                    console.log('User dismissed the install prompt');
+                }
+                deferredPrompt = null;
+            });
+        }
+    </script>
+        
+    <script type="module">
+  // Get the button
+  const mybutton = document.getElementById("btn-back-to-top");
+
+  // When the user scrolls down 20px from the top of the document, show the button
+
+  const scrollFunction = () => {
+    if (
+      document.body.scrollTop > 20 ||
+      document.documentElement.scrollTop > 20
+    ) {
+      mybutton.classList.remove("hidden");
+    } else {
+      mybutton.classList.add("hidden");
+    }
+  };
+  const backToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // When the user clicks on the button, scroll to the top of the document
+  mybutton.addEventListener("click", backToTop);
+
+  window.addEventListener("scroll", scrollFunction);
+</script>
+        
+    <script>
+        // Manifest for PWA
+        const manifest = {
+            "name": "GFR Calculator",
+            "short_name": "GFR Calc",
+            "description": "Glomerular Filtration Rate calculator for kidney function assessment",
+            "start_url": "/",
+            "display": "standalone",
+            "background_color": "#ffffff",
+            "theme_color": "#3b82f6",
+            "icons": [
+                {
+                    "src": "/icon/android-icon-192x192.png",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                },
+                {
+                    "src": "/icon/apple-icon-180x180.png",
+                    "sizes": "180x180",
+                    "type": "image/png"
+                }
+            ]
+        };
+
+        // Create manifest file dynamically
+        const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+        const manifestURL = URL.createObjectURL(blob);
+        document.querySelector('link[rel="manifest"]').href = manifestURL;
+
+        // Service Worker script
+        const swScript = `
+            const CACHE_NAME = 'gfr-calculator-v1';
+            const CACHE_NAME = 'gfr-calculator-v2';
+            const urlsToCache = [
+                '/',
+                '/index.html',
+                '/calculator.html',
+                '/stages.html',
+                '/contact.html',
+                '/styles.css',
+                '/script.js',
+                '/imgs/logo.png',
+                '/icon/android-icon-192x192.png',
+                '/icon/apple-icon-180x180.png'
+            ];
+
+            self.addEventListener('install', event => {
+                event.waitUntil(
+                    caches.open(CACHE_NAME)
+                        .then(cache => {
+                            return cache.addAll(urlsToCache);
+                        })
+                );
+            });
+
+            self.addEventListener('fetch', event => {
+                event.respondWith(
+                    caches.match(event.request)
+                        .then(response => {
+                            if (response) {
+                                return response;
+                            }
+                            return fetch(event.request);
+                        })
+                );
+            });
+
+            self.addEventListener('activate', event => {
+                const cacheWhitelist = [CACHE_NAME];
+                event.waitUntil(
+                    caches.keys().then(cacheNames => {
+                        return Promise.all(
+                            cacheNames.map(cacheName => {
+                                if (cacheWhitelist.indexOf(cacheName) === -1) {
+                                    return caches.delete(cacheName);
+                                }
+                            })
+                        );
+                    })
+                );
+            });
+        `;
+
+        // Create service worker file dynamically
+        const swBlob = new Blob([swScript], { type: 'application/javascript' });
+        const swURL = URL.createObjectURL(swBlob);
+        navigator.serviceWorker.register(swURL);
+    </script>
+</body>
+</html>

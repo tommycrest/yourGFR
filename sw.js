@@ -1,4 +1,4 @@
-  <script type="javascript"> // jshint ignore:line
+
         // Manifest for PWA
         let manifest = { // jshint ignore:line
             "name": "GFR Calculator",
@@ -80,4 +80,3 @@
         const swBlob = new Blob([swScript], { type: 'application/javascript' });
         const swURL = URL.createObjectURL(swBlob);
         navigator.serviceWorker.register(swURL);
-    </script>

@@ -83,6 +83,7 @@
             <div class="flex border-b mb-8">
                 <button id="tab-creatinine" class="tab-active px-6 py-3 text-center" data-tab="creatinine">Creatinine</button>
                 <button id="tab-cystatin" class="px-6 py-3 text-center" data-tab="cystatin">Cystatin C</button>
+                <button id="tab-combined" class="px-6 py-3 text-center" data-tab="combined">Combined</button>
             </div>
 
             <!-- Creatinine Calculator -->
@@ -128,6 +129,8 @@
                         </div>
                     </div>
                     
+                  
+                    
                     <!-- button id="calculate-creatinine" class="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300" id="calculate-button" -->
                     <button id="calculate-creatinine" class="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300">
                         Calculate GFR
@@ -162,6 +165,47 @@
                     
                     <!-- button id="calculate-cystatin" class="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300" id="cystatin-calculate-button" -->
                     <button id="calculate-cystatine" class="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300">
+                        Calculate GFR
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Combined Form (hidden by default) -->
+            <div id="combined-calculator" class="calculator-section hidden">
+                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                    <h2 class="text-xl font-semibold mb-4" id="combined-title">Cystatin C and Creatinine GFR Calculation</h2>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="creatinine" class="block mb-2" id="combined-creatinine-label">Serum Creatinine (mg/dL)</label>
+                            <input type="number" id="scr-comb" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-medical-blue focus:border-transparent" step="0.01" min="0.1" max="20">
+                        </div>
+                        <div>
+                            <label for="cystatin" class="block mb-2" id="combined-cystatin-label">Serum Cystatin C (mg/L)</label>
+                            <input type="number" id="cys-comb" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-medical-blue focus:border-transparent" step="0.01" min="0.1" max="10">
+                        </div>
+                        <div>
+                            <label for="cystatin-age" class="block mb-2" id="combined-age-label">Age (years)</label>
+                            <input type="number" id="age-comb" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-medical-blue focus:border-transparent" min="1" max="120">
+                        </div>
+                        <div>
+                            <label for="cystatin-sex" class="block mb-2" id="combined-sex-label">Sex</label>
+                            <select id="combined-cystatin-sex" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                <option value="male" id="combined-male-option">Male</option>
+                                <option value="female" id="combined-female-option">Female</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="race" class="block mb-2" id="combined-race-label">Race</label>
+                            <select id="combined-race" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                <option value="non-black" id="combined-non-black-option">Non-Black</option>
+                                <option value="black" id="combined-black-option">Black</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- button id="calculate-cystatin" class="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300" id="cystatin-calculate-button" -->
+                    <button id="calculate-combined" class="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300">
                         Calculate GFR
                     </button>
                 </div>
@@ -344,6 +388,7 @@
                 "calculate-cystatine":"Calculate GFR",
                 "calculate-creatinine":"Calculate GFR",
                 "cystatin-calculate-button": "Calculate GFR",
+                "calculate-combined":"Calculate GFR",
                 "results-title": "Results",
                 "gfr-value-title": "GFR Value",
                 "gfr-unit": "mL/min/1.73m²",
@@ -393,19 +438,29 @@
                 "sex-label": "Стать",
                 "male-option": "Чоловік",
                 "female-option": "Жінка",
+                "combined-age-label": "Вік (роки)",
+                "combined-sex-label": "Стать",
+                "combined-male-option": "Чоловік",
+                "combined-female-option": "Жінка",
                 "creatinine-label": "Креатинин сироватки (мг/дл)",
+                "combined-creatinine-label": "Креатинин сироватки (мг/дл)",
                 "race-label": "Раса",
+                "combined-race-label": "Раса",
                 "non-black-option": "Не чорношкірий",
                 "black-option": "Чорношкірий",
+                "combined-non-black-option": "Не чорношкірий",
+                "combined-black-option": "Чорношкірий",
                 "cystatin-age-label": "Вік (роки)",
                 "cystatin-sex-label": "Стать",
                 "cystatin-male-option": "Чоловік",
                 "cystatin-female-option": "Жінка",
                 "cystatin-label": "Цистатин C сироватки (мг/л)",
+                "combined-cystatin-label": "Цистатин C сироватки (мг/л)",
                 "calculate-button": "Розрахувати GFR",
                 "calculate-cystatine":"Розрахувати GFR",
                 "calculate-creatinine":"Розрахувати GFR",
                 "cystatin-calculate-button": "Розрахувати GFR",
+                "calculate-combined":"Розрахувати GFR",
                 "results-title": "Результати",
                 "gfr-value-title": "Значення GFR",
                 "gfr-unit": "мл/хв/1.73м²",
@@ -455,19 +510,29 @@
                 "sex-label": "Пол",
                 "male-option": "Мужчина",
                 "female-option": "Женщина",
+                "combined-age-label": "Возраст (лет)",
+                "combined-sex-label": "Пол",
+                "combined-male-option": "Мужчина",
+                "combined-female-option": "Женщина",
                 "creatinine-label": "Креатинин сыворотки (мг/дл)",
+                "combined-creatinine-label": "Креатинин сыворотки (мг/дл)",
                 "race-label": "Раса",
                 "non-black-option": "Не чернокожий",
                 "black-option": "Чернокожий",
+                "combined-race-label": "Раса",
+                "combined-non-black-option": "Не чернокожий",
+                "combined-black-option": "Чернокожий",
                 "cystatin-age-label": "Возраст (лет)",
                 "cystatin-sex-label": "Пол",
                 "cystatin-male-option": "Мужчина",
                 "cystatin-female-option": "Женщина",
                 "cystatin-label": "Цистатин C сыворотки (мг/л)",
+                "combined-cystatin-label": "Цистатин C сыворотки (мг/л)",
                 "calculate-button": "Рассчитать GFR",
                 "calculate-cystatine":"Рассчитать GFR",
                 "calculate-creatinine":"Рассчитать GFR",
                 "cystatin-calculate-button": "Рассчитать GFR",
+                "calculate-combined": "Рассчитать GFR",
                 "results-title": "Результаты",
                 "gfr-value-title": "Значение GFR",
                 "gfr-unit": "мл/мин/1.73м²",
@@ -532,6 +597,9 @@
         // Tab switcher
         document.getElementById('tab-creatinine').addEventListener('click', () => switchTab('creatinine'));
         document.getElementById('tab-cystatin').addEventListener('click', () => switchTab('cystatin'));
+        document.getElementById('tab-combined').addEventListener('click', () => switchTab('combined'));
+        
+        
 
         function switchTab(tab) {
             // Update active tab
@@ -576,6 +644,7 @@
         // Calculator logic
         document.getElementById('calculate-creatinine').addEventListener('click', calculateCreatinineGFR);
         document.getElementById('calculate-cystatine').addEventListener('click', calculateCystatinGFR);
+        document.getElementById('combined-calculator').addEventListener('click', calculateCombinedGRF);
         //document.getElementById('reset-calculator').addEventListener('click', resetCalculator);
         document.getElementById('reset-button').addEventListener('click', resetCalculator);
 
@@ -655,6 +724,36 @@
             // Display results
             displayResults(gfr, "CKD-EPI 2012 cystatin C equation");
         }
+        
+        function calculateCombinedGRF() {
+        // Combined GFR calculation
+            const scr = parseFloat(document.getElementById('scr-comb').value);
+            const cys = parseFloat(document.getElementById('cys-comb').value);
+            const age = parseInt(document.getElementById('age-comb').value);
+            const gender = document.getElementById('combined-cystatin-sex').value;
+            const race = document.getElementById('combined-race').value;
+            
+            if (isNaN(scr) || isNaN(cys) || isNaN(age)) {
+                 alert(lang === 'en' ? 'Please enter valid values for all fields' : 
+                      lang === 'ua' ? 'Будь ласка, введіть коректні значення для всіх полів' : 
+                      'Пожалуйста, введите корректные значения для всех полей');
+                return;
+            }
+            
+            // CKD-EPI Combined equation
+            let kappa = gender === 'female' ? 0.7 : 0.9;
+            let alpha = gender === 'female' ? -0.248 : -0.207;
+            let raceCoeff = race === 'black' ? 1.159 : 1.0;
+            let genderCoeff = gender === 'female' ? 1.018 : 1.0;
+            
+            let gfr = 135 * Math.min(scr/kappa, 1)**alpha * Math.max(scr/kappa, 1)**-0.601 
+                    * Math.min(cys/0.8, 1)**-0.375 * Math.max(cys/0.8, 1)**-0.711 
+                    * 0.995**age * genderCoeff * raceCoeff;
+            gfr = Math.round(gfr * 100) / 100;
+            
+            displayResults(gfr, 'CKD-EPI Combined Equation (2012)');
+        }
+        
 
         function displayResults(gfr, formula) {
             const lang = document.querySelector('.language-active').id.split('-')[1];

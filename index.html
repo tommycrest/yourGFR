@@ -879,6 +879,7 @@
 
         // Install prompt for PWA
         let deferredPrompt;
+        const installButton = document.getElementById('install-button');
         window.addEventListener('beforeinstallprompt', (e) => {
             // Prevent the mini-infobar from appearing on mobile
             e.preventDefault();
@@ -895,6 +896,7 @@
                            'Установите это приложение для удобства';
             
             const installButton = document.createElement('button');
+            installButton.id = 'install-button';
             installButton.className = 'fixed bottom-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-700 transition';
             installButton.textContent = message;
             installButton.addEventListener('click', installApp);
@@ -903,6 +905,7 @@
         }
 
         function installApp() {
+            if(!deferrendPrompt) return;
             deferredPrompt.prompt();
             deferredPrompt.userChoice.then((choiceResult) => {
                 if (choiceResult.outcome === 'accepted') {
@@ -911,8 +914,16 @@
                     console.log('User dismissed the install prompt');
                 }
                 deferredPrompt = null;
+                // Hide your install button
+                installButton.style.display = 'none'; 
             });
         }
+        // Track successful installation
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA was installed');
+            installButton.style.display = 'none';
+            deferredPrompt = null;
+        });
     </script>
         
     <script type="module">

@@ -644,11 +644,14 @@
         // Calculator logic
         document.getElementById('calculate-creatinine').addEventListener('click', calculateCreatinineGFR);
         document.getElementById('calculate-cystatine').addEventListener('click', calculateCystatinGFR);
-        document.getElementById('combined-calculator').addEventListener('click', calculateCombinedGRF);
+        //calculate-combined
+        document.getElementById('calculate-combined').addEventListener('click', calculateCombinedGRF);
+        //document.getElementById('combined-calculator').addEventListener('click', calculateCombinedGRF);
         //document.getElementById('reset-calculator').addEventListener('click', resetCalculator);
         document.getElementById('reset-button').addEventListener('click', resetCalculator);
 
         function calculateCreatinineGFR() {
+            
             const age = parseFloat(document.getElementById('age').value);
             const sex = document.getElementById('sex').value;
             let creatinine = parseFloat(document.getElementById('creatinine').value);
@@ -689,6 +692,7 @@
         }
 
         function calculateCystatinGFR() {
+           
             const age = parseFloat(document.getElementById('cystatin-age').value);
             const sex = document.getElementById('cystatin-sex').value;
             const cystatin = parseFloat(document.getElementById('cystatin').value);
@@ -726,7 +730,8 @@
         }
         
         function calculateCombinedGRF() {
-        // Combined GFR calculation
+            console.log("Called");
+            // Combined GFR calculation
             const scr = parseFloat(document.getElementById('scr-comb').value);
             const cys = parseFloat(document.getElementById('cys-comb').value);
             const age = parseInt(document.getElementById('age-comb').value);
